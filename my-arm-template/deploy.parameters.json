@@ -31,14 +31,14 @@
     "parameters": {
       "appServicePlanName": {
         "type": "string",
-        "defaultValue": "testrs",
+        "defaultValue": "TestRS",
         "metadata": {
           "description": "Name of the App Service Plan."
         }
       },
       "webAppName": {
         "type": "string",
-        "defaultValue": "testrsevs",
+        "defaultValue": "TestRSEVS",
         "metadata": {
           "description": "Name of the Web App."
         }
