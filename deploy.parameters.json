@@ -6,10 +6,10 @@
       "value": "myMvcAppServicePlan"
     },
     "webAppName": {
-      "value": "myMvcApp-webapp"
+      "value": "myMvcApp-webapp-zigg"
     },
     "location": {
-      "value": "East US"
+      "value": "East US 2"
     }
   }
 }

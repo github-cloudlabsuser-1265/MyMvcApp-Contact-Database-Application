@@ -11,14 +11,14 @@
     },
     "webAppName": {
       "type": "string",
-      "defaultValue": "myMvcApp-webapp",
+      "defaultValue": "myMvcApp-webapp-zigg",
       "metadata": {
         "description": "Name of the Web App."
       }
     },
     "location": {
       "type": "string",
-      "defaultValue": "[resourceGroup().location]",
+      "defaultValue": "East US 2",
       "metadata": {
         "description": "Location for all resources."
       }
@@ -31,8 +31,8 @@
       "name": "[parameters('appServicePlanName')]",
       "location": "[parameters('location')]",
       "sku": {
-        "name": "F1",
-        "tier": "Free"
+        "name": "P2V2",
+        "tier": "PremiumV2"
       },
       "properties": {
         "reserved": false
