@@ -1,35 +1,39 @@
 using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Models;
-using MyMvcApp.Data;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MyMvcApp.Controllers;
 
 public class UserController : Controller
 {
-    private readonly AppDbContext _context;
-
-    public UserController(AppDbContext context)
+    private static List<User> _users = new List<User>
     {
-        _context = context;
-    }
+        new User { Id = 1, Name = "John Doe", Email = "john@example.com" },
+        new User { Id = 2, Name = "Jane Smith", Email = "jane@example.com" }
+    };
+    private static int _nextId = 3;
 
     // GET: User
-    public async Task<IActionResult> Index(string searchString)
+    public IActionResult Index()
     {
-        var users = from u in _context.Users select u;
-        if (!string.IsNullOrEmpty(searchString))
-        {
-            users = users.Where(u => u.Name.Contains(searchString));
-        }
-        return View(await users.ToListAsync());
+        return View(_users);
     }
 
     // GET: User/Details/5
-    public async Task<IActionResult> Details(int id)
+    public IActionResult Details(int? id)
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user == null) return NotFound();
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var user = _users.FirstOrDefault(u => u.Id == id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
         return View(user);
     }
 
@@ -42,67 +46,87 @@ public class UserController : Controller
     // POST: User/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(User user)
+    public IActionResult Create([Bind("Name,Email")] User user)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(user);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            user.Id = _nextId++;
+            _users.Add(user);
+            return RedirectToAction(nameof(Index));
         }
         return View(user);
     }
 
     // GET: User/Edit/5
-    public async Task<IActionResult> Edit(int id)
+    public IActionResult Edit(int? id)
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user == null) return NotFound();
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var user = _users.FirstOrDefault(u => u.Id == id);
+        if (user == null)
+        {
+            return NotFound();
+        }
         return View(user);
     }
 
     // POST: User/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, User user)
+    public IActionResult Edit(int id, [Bind("Id,Name,Email")] User user)
     {
-        if (id != user.Id) return NotFound();
+        if (id != user.Id)
+        {
+            return NotFound();
+        }
+
         if (ModelState.IsValid)
         {
-            try
+            var existingUser = _users.FirstOrDefault(u => u.Id == id);
+            if (existingUser == null)
             {
-                _context.Update(user);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Users.Any(e => e.Id == id))
-                    return NotFound();
-                else
-                    throw;
-            }
-            return RedirectToAction("Index");
+
+            existingUser.Name = user.Name;
+            existingUser.Email = user.Email;
+            
+            return RedirectToAction(nameof(Index));
         }
         return View(user);
     }
 
     // GET: User/Delete/5
-    public async Task<IActionResult> Delete(int id)
+    public IActionResult Delete(int? id)
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user == null) return NotFound();
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var user = _users.FirstOrDefault(u => u.Id == id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
         return View(user);
     }
 
     // POST: User/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    public IActionResult DeleteConfirmed(int id)
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user == null) return NotFound();
-        _context.Users.Remove(user);
-        await _context.SaveChangesAsync();
-        return RedirectToAction("Index");
+        var user = _users.FirstOrDefault(u => u.Id == id);
+        if (user != null)
+        {
+            _users.Remove(user);
+        }
+        
+        return RedirectToAction(nameof(Index));
     }
 }
