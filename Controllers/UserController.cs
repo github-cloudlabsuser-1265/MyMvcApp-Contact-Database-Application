@@ -15,9 +15,14 @@ public class UserController : Controller
     }
 
     // GET: User
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchString)
     {
-        return View(await _context.Users.ToListAsync());
+        var users = from u in _context.Users select u;
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            users = users.Where(u => u.Name.Contains(searchString));
+        }
+        return View(await users.ToListAsync());
     }
 
     // GET: User/Details/5

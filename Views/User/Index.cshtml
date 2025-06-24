@@ -1,13 +1,16 @@
 @model IEnumerable<MyMvcApp.Models.User>
-
 @{
     ViewBag.Title = "Index";
+    var searchString = Context.Request.Query["searchString"].ToString();
 }
-
 <h2>Index</h2>
-
+<form asp-action="Index" method="get" class="form-inline mb-3">
+    <input type="text" name="searchString" class="form-control mr-2" placeholder="Search by name or email" value="@searchString" />
+    <button type="submit" class="btn btn-primary">Search</button>
+    <a class="btn btn-secondary ml-2" href="@Url.Action("Index")">Clear</a>
+</form>
 <p>
-    @Html.ActionLink("Create New", "Create", "User")
+    <a class="btn btn-primary" href="@Url.Action("Create", "User")">Create New</a>
 </p>
 <table class="table">
     <tr>
@@ -19,7 +22,6 @@
         </th>
         <th></th>
     </tr>
-
 @foreach (var item in Model) {
     <tr>
         <td>
@@ -29,11 +31,10 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a class="btn btn-warning btn-sm" href="@Url.Action("Edit", new { id = item.Id })">Edit</a>
+            <a class="btn btn-info btn-sm" href="@Url.Action("Details", new { id = item.Id })">Details</a>
+            <a class="btn btn-danger btn-sm" href="@Url.Action("Delete", new { id = item.Id })">Delete</a>
         </td>
     </tr>
 }
-
 </table>
