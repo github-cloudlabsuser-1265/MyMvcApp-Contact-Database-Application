@@ -129,4 +129,20 @@ public class UserController : Controller
         
         return RedirectToAction(nameof(Index));
     }
+
+    // GET: User/Search?query=somevalue
+    public IActionResult Search(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return View("Index", _users);
+        }
+
+        var results = _users
+            .Where(u => u.Name.Contains(query, System.StringComparison.OrdinalIgnoreCase) ||
+                        u.Email.Contains(query, System.StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        return View("Index", results);
+    }
 }

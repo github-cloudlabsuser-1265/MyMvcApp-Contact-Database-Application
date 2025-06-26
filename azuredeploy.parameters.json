@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appServicePlanName": {
+      "value": "myMvcAppServicePlan"
+    },
+    "webAppName": {
+      "value": "myMvcAppWebApp"
+    },
+    "sqlServerName": {
+      "value": "myMvcAppSqlServer"
+    },
+    "sqlDbName": {
+      "value": "myMvcAppDb"
+    },
+    "sqlAdminLogin": {
+      "value": "sqladmin"
+    },
+    "sqlAdminPassword": {
+      "value": "<YourStrong!Passw0rd>"
+    },
+    "location": {
+      "value": "eastus"
+    }
+  }
+}

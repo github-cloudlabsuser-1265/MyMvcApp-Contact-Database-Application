@@ -6,7 +6,7 @@
 <h2>Index</h2>
 <form asp-action="Index" method="get" class="form-inline mb-3">
     <input type="text" name="searchString" class="form-control mr-2" placeholder="Search by name or email" value="@searchString" />
-    <button type="submit" class="btn btn-primary">Search</button>
+    <button type="submit" class="btn btn-primary" href="@Url.Action("Search", "User")">Search</button>
     <a class="btn btn-secondary ml-2" href="@Url.Action("Index")">Clear</a>
 </form>
 <p>
